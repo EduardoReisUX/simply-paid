@@ -6,6 +6,27 @@ Simple and secure payment service between people. Side project made to get hands
 
 - `Node@20.0.9`
 - `Typescript@5.3.3`
+- `Vitest@1.2.1`
+
+## How to run it
+
+Using docker:
+
+- **Build the Docker Image**: After creating the Dockerfile, you can build the Docker image using the following command:
+
+```bash
+docker build -t simply-paid .
+```
+
+This command tells Docker to build an image using the Dockerfile in the current directory and tag (-t) the image with the name "simply-paid".
+
+- **Run the Docker Container**: Once the image has been built, you can run it as a container with the following command:
+
+```bash
+docker run -p 3000:3000 -d simply-paid
+```
+
+This command tells Docker to run a container from the "simply-paid" image, map port 3000 of the container to port 3000 of the host machine, and run the container in detached mode (-d).
 
 ## 💭 How it was built
 
@@ -30,4 +51,5 @@ First of all, after a slow and patient reading through the requirements, I got t
 - [PHP static analysis tools](https://github.com/exakat/php-static-analysis-tools)
 - [Martin Fowler - Microservices](https://martinfowler.com/articles/microservices.htm)
 - [REST Tutorial](https://www.devmedia.com.br/rest-tutorial/28912)
-- [When to Use a Private Constructor | TypeScript OOP](https://khalilstemmler.com/blogs/typescript/when-to-use-a-private-constructor/)
+- [Vitest - Getting started](https://vitest.dev/guide/#getting-started)
+- [How to Setup a TypeScript + Node.js Project](https://khalilstemmler.com/blogs/typescript/node-starter-project/)
