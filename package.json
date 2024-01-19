@@ -5,7 +5,9 @@
   "main": "index.js",
   "scripts": {
     "dev": "nodemon ./src/index.ts",
-    "test": "vitest"
+    "test": "vitest",
+    "build": "rm -rf ./build && tsc",
+    "start": "node build/index.js"
   },
   "keywords": [],
   "author": "",
