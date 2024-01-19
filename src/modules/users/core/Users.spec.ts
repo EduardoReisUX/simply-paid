@@ -14,7 +14,13 @@ describe("Users", () => {
 
     const result = User.create(data);
 
-    expect(result).toBeTruthy();
+    expect(result).toHaveProperty("id");
+    expect(result).toHaveProperty("name");
+    expect(result).toHaveProperty("lastname");
+    expect(result).toHaveProperty("email");
+    expect(result).toHaveProperty("password");
+    expect(result).toHaveProperty("document");
+    expect(result).toHaveProperty("role");
   });
 
   it("should not create a user given invalid document format", () => {
@@ -24,12 +30,12 @@ describe("Users", () => {
       email: "unique@email.com",
       password: "dudu",
       document: "asdfghjklzx",
-      role: "common",
+      role: "shopkeeper",
     } as IUser;
 
     expect(User.create(data)).toStrictEqual([
       {
-        message: "The document asdfghjklzx must have only numbers!",
+        message: "The user document [asdfghjklzx] must have only numbers!",
         name: "InvalidFormatError",
       },
     ]);
@@ -47,7 +53,7 @@ describe("Users", () => {
 
     expect(User.create(data)).toStrictEqual([
       {
-        message: "The document 123456 must have 11 digits!",
+        message: "The user document [123456] must have 11 digits!",
         name: "InvalidLengthError",
       },
     ]);
