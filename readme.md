@@ -40,7 +40,9 @@ First of all, after a slow and patient reading through the requirements, I got t
 
 #### Dependency Inversion
 
-### ...
+### Error handling
+
+### Data modeling relationships
 
 ## Sources
 
@@ -53,3 +55,6 @@ First of all, after a slow and patient reading through the requirements, I got t
 - [REST Tutorial](https://www.devmedia.com.br/rest-tutorial/28912)
 - [Vitest - Getting started](https://vitest.dev/guide/#getting-started)
 - [How to Setup a TypeScript + Node.js Project](https://khalilstemmler.com/blogs/typescript/node-starter-project/)
+- [The 5 commandments of clean error handling in TypeScript](https://medium.com/with-orus/the-5-commandments-of-clean-error-handling-in-typescript-93a9cbdf1af5)
+- [Handling errors like a pro in TypeScript](https://engineering.udacity.com/handling-errors-like-a-pro-in-typescript-d7a314ad4991)
+- [Database table relationships](https://www.metabase.com/learn/databases/table-relationships)
