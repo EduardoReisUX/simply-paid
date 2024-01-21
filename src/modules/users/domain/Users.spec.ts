@@ -58,4 +58,22 @@ describe("Users", () => {
       },
     ]);
   });
+
+  it("should not create a user given invalid document length AND format", () => {
+    const data = {
+      name: "dudu",
+      lastname: "dos reis",
+      email: "unique@email.com",
+      password: "dudu",
+      document: "789sfg _",
+      role: "shopkeeper",
+    } as IUser;
+
+    const errors = [
+      { name: "InvalidFormatError" },
+      { name: "InvalidLengthError" },
+    ];
+
+    expect(User.create(data)).toMatchObject(errors);
+  });
 });

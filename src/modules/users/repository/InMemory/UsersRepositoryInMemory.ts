@@ -1,4 +1,4 @@
-import { User } from "../../core/Users";
+import { User } from "../../domain/Users";
 import { IUsersRepository } from "../IUsersRepository";
 
 export class UsersRepositoryInMemory implements IUsersRepository {

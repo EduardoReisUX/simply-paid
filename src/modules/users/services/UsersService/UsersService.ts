@@ -1,14 +1,14 @@
-import { IUser, User } from "../../core/Users";
+import { CreateUserDTO } from "../../dtos/CreateUserDTO";
 import { IUsersRepository } from "../../repository/IUsersRepository";
 
-export class CreateUserUseCase {
+export class UsersService {
   private usersRepository;
 
   constructor(usersRepositoy: IUsersRepository) {
     this.usersRepository = usersRepositoy;
   }
 
-  async execute(user: IUser) {
+  async create(user: CreateUserDTO) {
     const documentAlreadyExists = await this.usersRepository.getUserByDocument(
       user.document
     );

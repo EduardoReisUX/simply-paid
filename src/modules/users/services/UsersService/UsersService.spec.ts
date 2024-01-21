@@ -1,15 +1,15 @@
 import { beforeAll, describe, expect, it } from "vitest";
 import { UsersRepositoryInMemory } from "./../../repository/InMemory/UsersRepositoryInMemory";
-import { CreateUserUseCase } from "./../CreateUserUseCase/CreateUserUseCase";
-import { IUser } from "../../core/Users";
+import { UsersService } from "./../UsersService/UsersService";
+import { CreateUserDTO } from "../../dtos/CreateUserDTO";
 
-describe("Create user use case", () => {
+describe("Users service", () => {
   let usersRepositoryInMemory: UsersRepositoryInMemory;
-  let createUserUseCase: CreateUserUseCase;
+  let usersService: UsersService;
 
   beforeAll(() => {
     usersRepositoryInMemory = new UsersRepositoryInMemory([]);
-    createUserUseCase = new CreateUserUseCase(usersRepositoryInMemory);
+    usersService = new UsersService(usersRepositoryInMemory);
   });
 
   it("should create a user", async () => {
@@ -20,9 +20,9 @@ describe("Create user use case", () => {
       email: "asd@.com",
       password: "asd3",
       role: "common",
-    } as IUser;
+    } as CreateUserDTO;
 
-    const result = await createUserUseCase.execute(data);
+    const result = await usersService.create(data);
 
     expect(result).toBeUndefined();
   });
@@ -35,9 +35,9 @@ describe("Create user use case", () => {
       email: "asd@.com",
       password: "asd3",
       role: "common",
-    } as IUser;
+    } as CreateUserDTO;
 
-    const result = await createUserUseCase.execute(data);
+    const result = await usersService.create(data);
 
     expect(result).toStrictEqual({
       error: "user email [asd@.com] already exists!",
@@ -52,9 +52,9 @@ describe("Create user use case", () => {
       email: "asd@.com",
       password: "asd3",
       role: "shopkeeper",
-    } as IUser;
+    } as CreateUserDTO;
 
-    const result = await createUserUseCase.execute(data);
+    const result = await usersService.create(data);
 
     expect(result).toStrictEqual({
       error: "user document [777] already exists!",
