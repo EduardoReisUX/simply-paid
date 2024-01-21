@@ -1,23 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { ITransaction, Transaction } from "./Transactions";
 
-// receiver: User.role = "common" ou "shopkeeper"
-// sender: User.role = "common"
-// amount: valor enviado
-// date: quando aconteceu
-// status pode ser "enviado" ou "revertido" em caso de inconsistencia
-// se "revertido", dizer quando foi revertido
-
-// transaction_id
-// date
-// amount
-// status: "success" | "failure"
-// reverted_date: new Date() se "failure"
-// receiver_id
-// sender_id
-
-// common recebem e enviam dinheiro, shopkeepers apenas recebem.
-// reverter caso dê inconsistência
 describe("Transactions entity", () => {
   it("should create a transaction", () => {
     const data = {
