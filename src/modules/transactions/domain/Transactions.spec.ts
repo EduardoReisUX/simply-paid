@@ -36,7 +36,7 @@ describe("Transactions entity", () => {
     expect(result).toStrictEqual([
       {
         name: "InvalidFormatError",
-        message: `The transacation amount [asdf] must be a valid number`,
+        message: `The transaction amount [asdf] must be a valid number`,
       },
     ]);
   });

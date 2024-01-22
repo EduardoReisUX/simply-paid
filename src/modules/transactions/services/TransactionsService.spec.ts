@@ -19,8 +19,9 @@ describe("Transactions service", () => {
     lastname: "dos reis",
     email: "unique@email.com",
     password: "dudu",
-    document: "12345678911",
+    document: "12345678910",
     role: "common",
+    funds: 20,
   } as CreateUserDTO;
 
   let shopkeeper_user = {
@@ -50,8 +51,8 @@ describe("Transactions service", () => {
 
   it("should create a transaction given valid data", async () => {
     const data = {
-      sender_id: common_user.document,
-      receiver_id: shopkeeper_user.document,
+      sender_document: common_user.document,
+      receiver_document: shopkeeper_user.document,
       amount: "19.90",
     };
 
@@ -62,8 +63,8 @@ describe("Transactions service", () => {
 
   it("should not create a transaction given invalid sender document", async () => {
     const data = {
-      sender_id: "invalid",
-      receiver_id: shopkeeper_user.document,
+      sender_document: "invalid",
+      receiver_document: shopkeeper_user.document,
       amount: "19.90",
     };
 
@@ -74,8 +75,8 @@ describe("Transactions service", () => {
 
   it("should not create a transaction given invalid receiver document", async () => {
     const data = {
-      sender_id: common_user.document,
-      receiver_id: "invalid",
+      sender_document: common_user.document,
+      receiver_document: "invalid",
       amount: "19.90",
     };
 
@@ -86,8 +87,8 @@ describe("Transactions service", () => {
 
   it("should not create a transaction given sender is shopkeeper", async () => {
     const data = {
-      sender_id: shopkeeper_user.document,
-      receiver_id: common_user.document,
+      sender_document: shopkeeper_user.document,
+      receiver_document: common_user.document,
       amount: "19.90",
     };
 
@@ -100,15 +101,33 @@ describe("Transactions service", () => {
 
   it("should not create a transaction given sender doesn't have sufficient funds", async () => {
     const data = {
-      sender_id: "",
-      receiver_id: "",
+      sender_document: common_user.document,
+      receiver_document: shopkeeper_user.document,
       amount: "9999",
     };
 
     const result = await transactionServices.createTransaction(data);
 
     expect(result).toStrictEqual({
-      error: `Sender [nome] does not have sufficient funds!`,
+      error: `Sender [${common_user.name}] does not have sufficient funds!`,
+    });
+  });
+
+  it("should not create a transaction given data is in invalid format", async () => {
+    const data = {
+      sender_document: common_user.document,
+      receiver_document: shopkeeper_user.document,
+      amount: "99a",
+    };
+
+    const result = (await transactionServices.createTransaction(data)) as {
+      name: string;
+      message: string;
+    }[];
+
+    result!.forEach((error) => {
+      expect(error).toHaveProperty("name");
+      expect(error).toHaveProperty("message");
     });
   });
 });
