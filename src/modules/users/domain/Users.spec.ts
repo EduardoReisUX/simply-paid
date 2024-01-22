@@ -21,6 +21,7 @@ describe("Users", () => {
     expect(result).toHaveProperty("password");
     expect(result).toHaveProperty("document");
     expect(result).toHaveProperty("role");
+    expect(result).toHaveProperty("funds");
   });
 
   it("should not create a user given invalid document format", () => {
