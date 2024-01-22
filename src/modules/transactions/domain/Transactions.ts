@@ -1,7 +1,7 @@
 export interface ITransaction {
   amount: string;
-  date: Date;
-  status: "success" | "refunded";
+  date?: Date;
+  status?: "success" | "refunded";
   sender_id: string;
   receiver_id: string;
 }
@@ -18,18 +18,18 @@ export class Transaction {
   private constructor(transaction: ITransaction) {
     this.transaction_id = crypto.randomUUID();
     this.amount = transaction.amount;
-    this.date = transaction.date;
-    this.status = transaction.status;
+    this.date = transaction.date ? transaction.date : new Date();
+    this.status = transaction.status ? transaction.status : "success";
     this.refunded_date = this.status === "success" ? null : new Date();
     this.sender_id = transaction.sender_id;
     this.receiver_id = transaction.receiver_id;
   }
 
   public static create(transaction: ITransaction) {
-    const status = this.validateAmount(transaction.amount);
+    const amount = this.validateAmount(transaction.amount);
 
-    if (!status.isValid) {
-      return status.errors;
+    if (!amount.isValid) {
+      return amount.errors;
     }
 
     return new Transaction(transaction);
@@ -41,7 +41,7 @@ export class Transaction {
     if (isNaN(Number(amount))) {
       errors.push({
         name: "InvalidFormatError",
-        message: `The transacation amount [${amount}] must be a valid number`,
+        message: `The transaction amount [${amount}] must be a valid number`,
       });
     }
 
