@@ -5,6 +5,7 @@ export interface IUser {
   email: string;
   password: string;
   role: "common" | "shopkeeper";
+  funds?: number;
 }
 
 export class User {
@@ -15,6 +16,7 @@ export class User {
   email;
   password;
   role;
+  funds;
 
   constructor(user: IUser) {
     this.id = crypto.randomUUID();
@@ -24,6 +26,7 @@ export class User {
     this.email = user.email;
     this.password = user.password;
     this.role = user.role;
+    this.funds = user.funds || 0;
   }
 
   public static create(user: IUser) {
