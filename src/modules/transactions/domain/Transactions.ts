@@ -1,3 +1,5 @@
+import { Result } from "../../../shared/Result";
+
 export interface ITransaction {
   amount: string;
   date?: Date;
@@ -29,20 +31,19 @@ export class Transaction {
     const amount = this.validateAmount(transaction.amount);
 
     if (!amount.isValid) {
-      return amount.errors;
+      return Result.fail<Transaction>(amount.errors);
     }
 
-    return new Transaction(transaction);
+    return Result.ok<Transaction>(new Transaction(transaction));
   }
 
   private static validateAmount(amount: string) {
     const errors = [];
 
     if (isNaN(Number(amount))) {
-      errors.push({
-        name: "InvalidFormatError",
-        message: `The transaction amount [${amount}] must be a valid number`,
-      });
+      errors.push(
+        `InvalidFormatError: The transaction amount [${amount}] must be a valid number`
+      );
     }
 
     return { errors, isValid: !errors.length };
