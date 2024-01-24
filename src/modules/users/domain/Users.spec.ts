@@ -13,15 +13,16 @@ describe("Users", () => {
     } as IUser;
 
     const result = User.create(data);
+    const user = result.getValue();
 
-    expect(result).toHaveProperty("id");
-    expect(result).toHaveProperty("name");
-    expect(result).toHaveProperty("lastname");
-    expect(result).toHaveProperty("email");
-    expect(result).toHaveProperty("password");
-    expect(result).toHaveProperty("document");
-    expect(result).toHaveProperty("role");
-    expect(result).toHaveProperty("funds");
+    expect(user).toHaveProperty("id");
+    expect(user).toHaveProperty("name");
+    expect(user).toHaveProperty("lastname");
+    expect(user).toHaveProperty("email");
+    expect(user).toHaveProperty("password");
+    expect(user).toHaveProperty("document");
+    expect(user).toHaveProperty("role");
+    expect(user).toHaveProperty("funds");
   });
 
   it("should not create a user given invalid document format", () => {
@@ -34,11 +35,10 @@ describe("Users", () => {
       role: "shopkeeper",
     } as IUser;
 
-    expect(User.create(data)).toStrictEqual([
-      {
-        message: "The user document [asdfghjklzx] must have only numbers!",
-        name: "InvalidFormatError",
-      },
+    const result = User.create(data);
+
+    expect(result.errors).toStrictEqual([
+      "InvalidFormatError: The user document [asdfghjklzx] must have only numbers!",
     ]);
   });
 
@@ -52,11 +52,10 @@ describe("Users", () => {
       role: "common",
     } as IUser;
 
-    expect(User.create(data)).toStrictEqual([
-      {
-        message: "The user document [123456] must have 11 digits!",
-        name: "InvalidLengthError",
-      },
+    const result = User.create(data);
+
+    expect(result.errors).toStrictEqual([
+      "InvalidLengthError: The user document [123456] must have 11 digits!",
     ]);
   });
 
@@ -70,11 +69,13 @@ describe("Users", () => {
       role: "shopkeeper",
     } as IUser;
 
+    const result = User.create(data);
+
     const errors = [
-      { name: "InvalidFormatError" },
-      { name: "InvalidLengthError" },
+      "InvalidFormatError: The user document [789sfg _] must have only numbers!",
+      "InvalidLengthError: The user document [789sfg _] must have 11 digits!",
     ];
 
-    expect(User.create(data)).toMatchObject(errors);
+    expect(result.errors).toStrictEqual(errors);
   });
 });
