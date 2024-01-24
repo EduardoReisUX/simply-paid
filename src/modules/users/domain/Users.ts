@@ -1,3 +1,5 @@
+import { Result } from "../../../shared/Result";
+
 export interface IUser {
   name: string;
   lastname: string;
@@ -33,33 +35,31 @@ export class User {
     const document = this.validateDocument(user.document);
 
     if (!document.isValid) {
-      return document.errors;
+      return Result.fail<User>(document.errors);
     }
 
     const role = this.validateRole(user.role);
 
     if (!role.isValid) {
-      return role.errors;
+      return Result.fail<User>(role.errors);
     }
 
-    return new User(user);
+    return Result.ok<User>(new User(user));
   }
 
   private static validateDocument(document: string) {
     const errors = [];
 
     if (isNaN(Number(document))) {
-      errors.push({
-        name: "InvalidFormatError",
-        message: `The user document [${document}] must have only numbers!`,
-      });
+      errors.push(
+        `InvalidFormatError: The user document [${document}] must have only numbers!`
+      );
     }
 
     if (document.length !== 11) {
-      errors.push({
-        name: "InvalidLengthError",
-        message: `The user document [${document}] must have 11 digits!`,
-      });
+      errors.push(
+        `InvalidLengthError: The user document [${document}] must have 11 digits!`
+      );
     }
 
     return { errors, isValid: !errors.length };
@@ -69,10 +69,9 @@ export class User {
     const errors = [];
 
     if (role !== "common" && role !== "shopkeeper") {
-      errors.push({
-        name: "InvalidFormatError",
-        message: `The user role [${role}] should have only numbers!`,
-      });
+      errors.push(
+        `InvalidFormatError: The user role [${role}] should have only numbers!`
+      );
     }
 
     return { errors, isValid: !errors.length };

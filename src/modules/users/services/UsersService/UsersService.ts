@@ -1,3 +1,4 @@
+import { Result } from "../../../../shared/Result";
 import { User } from "../../domain/Users";
 import { CreateUserDTO } from "../../dtos/CreateUserDTO";
 import { IUsersRepository } from "../../repository/IUsersRepository";
@@ -15,7 +16,7 @@ export class UsersService {
     );
 
     if (documentAlreadyExists) {
-      return { error: `user document [${data.document}] already exists!` };
+      return Result.fail([`user document [${data.document}] already exists!`]);
     }
 
     const emailAlreadyExists = await this.usersRepository.getUserByEmail(
@@ -23,23 +24,41 @@ export class UsersService {
     );
 
     if (emailAlreadyExists) {
-      return { error: `user email [${data.email}] already exists!` };
+      return Result.fail([`user email [${data.email}] already exists!`]);
     }
 
-    const user = User.create(data);
+    const userOrError = User.create(data);
 
-    if (Array.isArray(user)) {
-      return user.map((error) => error);
+    if (userOrError.isFailure) {
+      return Result.fail(userOrError.errors.map((error) => error));
     }
 
-    this.usersRepository.save(user);
+    const user = userOrError.getValue();
+
+    return Result.ok(await this.usersRepository.save(user));
   }
 
   async findById(id: string) {
-    return await this.usersRepository.getUserById(id);
+    const user = await this.usersRepository.getUserById(id);
+
+    if (!user) {
+      return Result.fail<User>([
+        "UsersService.findById: Could not find user by ID!",
+      ]);
+    }
+
+    return Result.ok<User>(user);
   }
 
   async findByDocument(document: string) {
-    return await this.usersRepository.getUserByDocument(document);
+    const user = await this.usersRepository.getUserByDocument(document);
+
+    if (!user) {
+      return Result.fail<User>([
+        `UsersService.findById: Could not find user by document [${document}]!`,
+      ]);
+    }
+
+    return Result.ok<User>(user);
   }
 }
