@@ -11,15 +11,16 @@ describe("Transactions entity", () => {
       receiver_id: "19.90",
     } as ITransaction;
 
-    const result = Transaction.create(data) as Transaction;
+    const result = Transaction.create(data);
+    const transaction = result.getValue();
 
-    expect(result).toHaveProperty("transaction_id");
-    expect(result).toHaveProperty("sender_id");
-    expect(result).toHaveProperty("receiver_id");
-    expect(result).toHaveProperty("amount");
-    expect(result).toHaveProperty("date");
-    expect(result).toHaveProperty("status");
-    expect(result.refunded_date).toBe(null);
+    expect(transaction).toHaveProperty("transaction_id");
+    expect(transaction).toHaveProperty("sender_id");
+    expect(transaction).toHaveProperty("receiver_id");
+    expect(transaction).toHaveProperty("amount");
+    expect(transaction).toHaveProperty("date");
+    expect(transaction).toHaveProperty("status");
+    expect(transaction.refunded_date).toBe(null);
   });
 
   it("should not create a transaction given invalid amount format", () => {
@@ -33,11 +34,8 @@ describe("Transactions entity", () => {
 
     const result = Transaction.create(data);
 
-    expect(result).toStrictEqual([
-      {
-        name: "InvalidFormatError",
-        message: `The transaction amount [asdf] must be a valid number`,
-      },
+    expect(result.errors).toStrictEqual([
+      `InvalidFormatError: The transaction amount [asdf] must be a valid number`,
     ]);
   });
 });
