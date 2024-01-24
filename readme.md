@@ -36,25 +36,43 @@ First of all, after a slow and patient reading through the requirements, I got t
 
 ### Docker things
 
-### Design Patterns
+### Dependency Inversion
 
-#### Dependency Inversion
+### Error handling with result pattern
 
-### Error handling
+The `Result` class in TypeScript is a design pattern used to handle operations that can either succeed or fail. It encapsulates the outcome of a computation along with its success status and any associated error message. The class uses generics, allowing it to work with different types of values.
+
+Here's a breakdown of what the class does:
+
+- **Properties**: The class has four properties: `isSuccess`, `isFailure`, `error`, and `_value`. `isSuccess` indicates whether the operation was successful, `isFailure` is the opposite of `isSuccess`, `error` contains any error message if the operation failed, and `_value` holds the actual value of the operation if it succeeded.
+
+- **Constructor**: The constructor takes three parameters: `isSuccess`, `error`, and `value`. It checks for invalid states where a successful result has an error, or a failing result doesn't have an error. If such conditions are met, it throws an error.
+
+- **getValue**: This method returns the value of the operation if it was successful. If the operation wasn't successful, it throws an error.
+
+- **ok**: This static method creates a new `Result` instance representing a successful operation. It takes an optional `value` parameter.
+
+- **fail**: This static method creates a new `Result` instance representing a failed operation. It requires an `error` parameter.
+
+- **combine**: This static method takes an array of `Result` instances and returns the first failure it finds, or a successful result if there are no failures.
+
+This class is a good way to handle operations that can either succeed or fail, providing a clear and consistent way to check the result of an operation and handle errors.
+
 
 ### Data modeling relationships
 
 ## Sources
-
+ 
 - [PicPay Desafio Back-End](https://github.com/PicPay/picpay-desafio-backend)
 - [Why we need design patterns](https://hub.packtpub.com/why-we-need-design-patterns/)
 - [Refactoring Guru](https://refactoring.guru/)
 - [Types of software testing](https://www.atlassian.com/continuous-delivery/software-testing/types-of-software-testing)
 - [PHP static analysis tools](https://github.com/exakat/php-static-analysis-tools)
-- [Martin Fowler - Microservices](https://martinfowler.com/articles/microservices.htm)
+- [Martin Fowler - Microservices](https://martinfowler.com/articles/microservices.html)
 - [REST Tutorial](https://www.devmedia.com.br/rest-tutorial/28912)
 - [Vitest - Getting started](https://vitest.dev/guide/#getting-started)
 - [How to Setup a TypeScript + Node.js Project](https://khalilstemmler.com/blogs/typescript/node-starter-project/)
 - [The 5 commandments of clean error handling in TypeScript](https://medium.com/with-orus/the-5-commandments-of-clean-error-handling-in-typescript-93a9cbdf1af5)
 - [Handling errors like a pro in TypeScript](https://engineering.udacity.com/handling-errors-like-a-pro-in-typescript-d7a314ad4991)
 - [Database table relationships](https://www.metabase.com/learn/databases/table-relationships)
+- [Flexible Error Handling w/ the Result Class | Enterprise Node.js + TypeScript](https://khalilstemmler.com/articles/enterprise-typescript-nodejs/handling-errors-result-class/)
