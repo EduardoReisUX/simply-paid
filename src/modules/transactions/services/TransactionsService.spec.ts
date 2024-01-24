@@ -58,7 +58,7 @@ describe("Transactions service", () => {
 
     const result = await transactionServices.createTransaction(data);
 
-    expect(result).toBeUndefined();
+    expect(result.getValue()).toBeUndefined();
   });
 
   it("should not create a transaction given invalid sender document", async () => {
@@ -70,7 +70,7 @@ describe("Transactions service", () => {
 
     const result = await transactionServices.createTransaction(data);
 
-    expect(result).toStrictEqual({ error: "Sender not found!" });
+    expect(result.errors).toStrictEqual(["Sender not found!"]);
   });
 
   it("should not create a transaction given invalid receiver document", async () => {
@@ -82,7 +82,7 @@ describe("Transactions service", () => {
 
     const result = await transactionServices.createTransaction(data);
 
-    expect(result).toStrictEqual({ error: "Receiver not found!" });
+    expect(result.errors).toStrictEqual(["Receiver not found!"]);
   });
 
   it("should not create a transaction given sender is shopkeeper", async () => {
@@ -94,9 +94,9 @@ describe("Transactions service", () => {
 
     const result = await transactionServices.createTransaction(data);
 
-    expect(result).toStrictEqual({
-      error: `Shopkeepers [${shopkeeper_user.name}] can't transfer funds!`,
-    });
+    expect(result.errors).toStrictEqual([
+      `Shopkeepers [${shopkeeper_user.name}] can't transfer funds!`,
+    ]);
   });
 
   it("should not create a transaction given sender doesn't have sufficient funds", async () => {
@@ -108,9 +108,9 @@ describe("Transactions service", () => {
 
     const result = await transactionServices.createTransaction(data);
 
-    expect(result).toStrictEqual({
-      error: `Sender [${common_user.name}] does not have sufficient funds!`,
-    });
+    expect(result.errors).toStrictEqual([
+      `Sender [${common_user.name}] does not have sufficient funds!`,
+    ]);
   });
 
   it("should not create a transaction given data is in invalid format", async () => {
@@ -120,14 +120,14 @@ describe("Transactions service", () => {
       amount: "99a",
     };
 
-    const result = (await transactionServices.createTransaction(data)) as {
-      name: string;
-      message: string;
-    }[];
+    const result = await transactionServices.createTransaction(data);
 
-    result!.forEach((error) => {
-      expect(error).toHaveProperty("name");
-      expect(error).toHaveProperty("message");
-    });
+    const expectedErrors = ["InvalidFormatError"];
+
+    const hasExpectedErrors = result.errors.every((error) =>
+      expectedErrors.some((expect) => error.includes(expect))
+    );
+
+    expect(hasExpectedErrors).toBeTruthy();
   });
 });
