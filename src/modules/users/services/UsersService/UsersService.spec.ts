@@ -82,4 +82,31 @@ describe("Users service", () => {
 
     expect(hasExpectedErrors).toBeTruthy();
   });
+
+  it("should find a user by document given valid data", async () => {
+    const data = "12345678910";
+
+    const result = await usersService.findByDocument(data);
+    const user = result.getValue();
+
+    expect(user).toHaveProperty("id");
+    expect(user).toHaveProperty("name");
+    expect(user).toHaveProperty("lastname");
+    expect(user).toHaveProperty("email");
+    expect(user).toHaveProperty("password");
+    expect(user).toHaveProperty("document");
+    expect(user).toHaveProperty("role");
+    expect(user).toHaveProperty("funds");
+    expect(user.document).toBe("12345678910");
+  });
+
+  it("should not find a user by document given invalid document", async () => {
+    const data = "777888999";
+
+    const result = await usersService.findByDocument(data);
+
+    expect(result.errors).toStrictEqual([
+      "UsersService.findById: Could not find user by document [777888999]!",
+    ]);
+  });
 });
