@@ -130,4 +130,25 @@ describe("Transactions service", () => {
 
     expect(hasExpectedErrors).toBeTruthy();
   });
+
+  it("should update sender and receiver funds after creating a transaction", async () => {
+    const data = {
+      sender_document: common_user.document,
+      receiver_document: shopkeeper_user.document,
+      amount: "19.90",
+    };
+
+    await transactionServices.createTransaction(data);
+
+    const sender = await usersService.findByDocument("12345678910");
+    const receiver = await usersService.findByDocument("98765432100");
+    const transaction = await transactionServices.findBySenderDocument(
+      "12345678910"
+    );
+
+    /* 20 - 19.90 = 0.1 */
+    expect(sender.getValue().funds).toBe("0.10");
+    expect(receiver.getValue().funds).toBe("19.90");
+    expect(transaction.getValue().amount).toBe("19.90");
+  });
 });
