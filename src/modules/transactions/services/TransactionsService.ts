@@ -63,8 +63,34 @@ export class TransactionsService {
       return Result.fail(transactionOrError.errors);
     }
 
+    sender.funds -= Number(amount);
+    receiver.funds += Number(amount);
+
     const transaction = transactionOrError.getValue();
 
     return Result.ok(await this.transactionsRepository.save(transaction));
+  }
+
+  async findBySenderDocument(sender_document: string) {
+    const transaction =
+      await this.transactionsRepository.findTransactionBySenderDocument(
+        sender_document
+      );
+
+    if (!transaction) {
+      return Result.fail<Transaction>([
+        `Transaction was not found with [${sender_document}] as sender document!`,
+      ]);
+    }
+
+    return Result.ok<Transaction>(transaction);
+  }
+
+  async calculateAmout(amount: string) {
+    if (isNaN(Number(amount))) {
+      return Result.fail([`Amount [${amount}] is not a number!`]);
+    }
+
+    return { amountToReceiver, subtractFromSender };
   }
 }
