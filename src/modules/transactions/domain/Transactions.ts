@@ -4,8 +4,8 @@ export interface ITransaction {
   amount: string;
   date?: Date;
   status?: "success" | "refunded";
-  sender_id: string;
-  receiver_id: string;
+  sender_document: string;
+  receiver_document: string;
 }
 
 export class Transaction {
@@ -14,8 +14,8 @@ export class Transaction {
   date;
   status;
   refunded_date;
-  sender_id;
-  receiver_id;
+  sender_document;
+  receiver_document;
 
   private constructor(transaction: ITransaction) {
     this.transaction_id = crypto.randomUUID();
@@ -23,8 +23,8 @@ export class Transaction {
     this.date = transaction.date ? transaction.date : new Date();
     this.status = transaction.status ? transaction.status : "success";
     this.refunded_date = this.status === "success" ? null : new Date();
-    this.sender_id = transaction.sender_id;
-    this.receiver_id = transaction.receiver_id;
+    this.sender_document = transaction.sender_document;
+    this.receiver_document = transaction.receiver_document;
   }
 
   public static create(transaction: ITransaction) {

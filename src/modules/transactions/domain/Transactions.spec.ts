@@ -7,16 +7,16 @@ describe("Transactions entity", () => {
       amount: "19.90",
       date: new Date(),
       status: "success",
-      sender_id: "19.90",
-      receiver_id: "19.90",
+      sender_document: "19.90",
+      receiver_document: "19.90",
     } as ITransaction;
 
     const result = Transaction.create(data);
     const transaction = result.getValue();
 
     expect(transaction).toHaveProperty("transaction_id");
-    expect(transaction).toHaveProperty("sender_id");
-    expect(transaction).toHaveProperty("receiver_id");
+    expect(transaction).toHaveProperty("sender_document");
+    expect(transaction).toHaveProperty("receiver_document");
     expect(transaction).toHaveProperty("amount");
     expect(transaction).toHaveProperty("date");
     expect(transaction).toHaveProperty("status");
@@ -28,8 +28,8 @@ describe("Transactions entity", () => {
       amount: "asdf",
       date: new Date(),
       status: "refunded",
-      sender_id: "19.90",
-      receiver_id: "19.90",
+      sender_document: "19.90",
+      receiver_document: "19.90",
     } as ITransaction;
 
     const result = Transaction.create(data);
