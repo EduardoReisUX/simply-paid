@@ -33,15 +33,12 @@ describe("Transactions service", () => {
     role: "shopkeeper",
   } as CreateUserDTO;
 
-  beforeAll(() => {
+  beforeEach(() => {
     usersRepositoryInMemory = new UsersRepositoryInMemory([]);
     usersService = new UsersService(usersRepositoryInMemory);
-
     usersService.create(common_user);
     usersService.create(shopkeeper_user);
-  });
 
-  beforeEach(() => {
     transactionsRepositoryInMemory = new TransactionsRepositoryInMemory([]);
     transactionServices = new TransactionsService(
       transactionsRepositoryInMemory,
@@ -146,7 +143,7 @@ describe("Transactions service", () => {
       "12345678910"
     );
 
-    /* 20 - 19.90 = 0.1 */
+    /* 20 - 19.90 = 0.10 */
     expect(sender.getValue().funds).toBe("0.10");
     expect(receiver.getValue().funds).toBe("19.90");
     expect(transaction.getValue().amount).toBe("19.90");

@@ -19,23 +19,19 @@ export class TransactionsRepositoryInMemory implements ITransactionRepository {
       ) || null
     );
   }
-  async findTransactionBySenderId(
-    sender_id: string
-  ): Promise<Transaction | null> {
-    return (
-      this.transactions.find(
-        (transaction) => transaction.sender_id === sender_id
-      ) || null
+  async findTransactionBySenderDocument(
+    sender_document: string
+  ): Promise<Transaction | undefined> {
+    return this.transactions.find(
+      (transaction) => transaction.sender_document === sender_document
     );
   }
 
-  async findTransactionByReceiverId(
-    receiver_id: string
-  ): Promise<Transaction | null> {
-    return (
-      this.transactions.find(
-        (transaction) => transaction.receiver_id === receiver_id
-      ) || null
+  async findTransactionByReceiverDocument(
+    receiver_document: string
+  ): Promise<Transaction | undefined> {
+    return this.transactions.find(
+      (transaction) => transaction.receiver_document === receiver_document
     );
   }
 

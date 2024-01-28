@@ -54,8 +54,8 @@ export class TransactionsService {
     }
 
     const transactionOrError = Transaction.create({
-      receiver_id: receiver.id,
-      sender_id: sender.id,
+      receiver_document: receiver.document,
+      sender_document: sender.document,
       amount,
     });
 
@@ -63,8 +63,13 @@ export class TransactionsService {
       return Result.fail(transactionOrError.errors);
     }
 
-    sender.funds -= Number(amount);
-    receiver.funds += Number(amount);
+    let senderAmount = parseFloat(sender.funds);
+    let receiverAmount = parseFloat(receiver.funds);
+    let transactionAmount = parseFloat(amount);
+
+    sender.funds = (senderAmount - transactionAmount).toFixed(2);
+
+    receiver.funds = (receiverAmount + transactionAmount).toFixed(2);
 
     const transaction = transactionOrError.getValue();
 
