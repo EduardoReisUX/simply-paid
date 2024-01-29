@@ -148,4 +148,30 @@ describe("Transactions service", () => {
     expect(receiver.getValue().funds).toBe("19.90");
     expect(transaction.getValue().amount).toBe("19.90");
   });
+
+  it.todo(
+    "should be able to refund after a successful transaction",
+    async () => {
+      const data = {
+        sender_document: common_user.document,
+        receiver_document: shopkeeper_user.document,
+        amount: "19.90",
+      };
+
+      await transactionServices.createTransaction(data);
+
+      const transaction = await transactionServices.findBySenderDocument(
+        "12345678910"
+      );
+
+      await transactionServices.refundTransaction(transaction);
+
+      const sender = await usersService.findByDocument("12345678910");
+      const receiver = await usersService.findByDocument("98765432100");
+
+      expect(transaction.getValue().status).toBe("refunded");
+      expect(sender.getValue().funds).toBe("20.00");
+      expect(receiver.getValue().funds).toBe("0.00");
+    }
+  );
 });
