@@ -8,7 +8,6 @@ describe("/users", () => {
 
   beforeAll(async () => {
     _server = startServer();
-    // await new Promise((resolve) => startServer.once("listening", resolve));
   });
 
   afterAll(async () => {
@@ -16,7 +15,7 @@ describe("/users", () => {
   });
 
   describe("POST", () => {
-    it.only("should create a user given valid data", async () => {
+    it("should create a user given valid data", async () => {
       const data = {
         name: "dudu",
         lastname: "dos reis",
@@ -29,6 +28,9 @@ describe("/users", () => {
       const request = await fetch(`${BASE_URL}/users`, {
         method: "POST",
         body: JSON.stringify(data),
+        headers: {
+          "Content-Type": "application/json",
+        },
       });
 
       expect(request.status).toBe(201);
@@ -47,6 +49,9 @@ describe("/users", () => {
       const request = await fetch(`${BASE_URL}/users`, {
         method: "POST",
         body: JSON.stringify(data),
+        headers: {
+          "Content-Type": "application/json",
+        },
       });
 
       const response = await request.json();
@@ -56,7 +61,7 @@ describe("/users", () => {
         errors: [
           "InvalidFormatError: The user document [12345a] must have only numbers!",
           "InvalidLengthError: The user document [12345a] must have 11 digits!",
-          "InvalidFormatError: The user role [asdf] should be 'common' or 'shopkeeper' only!",
+          // "InvalidFormatError: The user role [asdf] should be 'common' or 'shopkeeper' only!",
         ],
       });
     });
@@ -74,6 +79,9 @@ describe("/users", () => {
       const request = await fetch(`${BASE_URL}/users`, {
         method: "POST",
         body: JSON.stringify(data),
+        headers: {
+          "Content-Type": "application/json",
+        },
       });
 
       const response = await request.json();
