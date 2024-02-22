@@ -92,4 +92,35 @@ describe("/users", () => {
       });
     });
   });
+
+  describe("GET", () => {
+    it("should get user data given valid document", async () => {
+      const request = await fetch(`${BASE_URL}/users/12345678911`);
+
+      const response = await request.json();
+
+      expect(request.status).toBe(200);
+      expect(response.user).toHaveProperty("document", "12345678911");
+      expect(response.user).toHaveProperty("email", "unique@email.com");
+      expect(response.user).toHaveProperty("funds", 0);
+      expect(response.user).toHaveProperty("lastname", "dos reis");
+      expect(response.user).toHaveProperty("name", "dudu");
+      expect(response.user).toHaveProperty("password", "dudu");
+      expect(response.user).toHaveProperty("role", "common");
+      expect(response.user).toHaveProperty("id");
+    });
+
+    it("should not get user data given invalid document", async () => {
+      const request = await fetch(`${BASE_URL}/users/123`);
+
+      const response = await request.json();
+
+      expect(request.status).toBe(400);
+      expect(response).toStrictEqual({
+        errors: [
+          "UsersService.findById: Could not find user by document [123]!",
+        ],
+      });
+    });
+  });
 });
