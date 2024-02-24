@@ -1,11 +1,11 @@
 import { Request, Response, Router } from "express";
-import { UsersService } from "../../../../../modules/users/services/UsersService/UsersService";
-import { UsersRepositoryInMemory } from "../../../../../modules/users/repository/InMemory/UsersRepositoryInMemory";
+import { UsersService } from "../../../../../../modules/users/services/UsersService/UsersService";
+import { UsersRepositoryInMemory } from "../../../../../../modules/users/repository/InMemory/UsersRepositoryInMemory";
 
 export const usersRoute = Router();
 
 const usersRepository = new UsersRepositoryInMemory([]);
-const usersService = new UsersService(usersRepository);
+export const usersService = new UsersService(usersRepository);
 
 usersRoute.post("/", async (request: Request, response: Response) => {
   const { name, lastname, email, password, document, role } =

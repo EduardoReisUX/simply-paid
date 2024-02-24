@@ -1,17 +1,24 @@
 import { expect, describe, it, beforeAll, afterAll } from "vitest";
-import { startServer } from "./app";
+import { startServer } from "../../app";
+import type { Server } from "http";
 
 const BASE_URL = "http://localhost:3333";
 
 describe("/users", () => {
-  let _server;
+  let _server: Server;
 
   beforeAll(async () => {
-    _server = startServer();
+    await new Promise((resolve) => {
+      _server = startServer();
+      _server.once("listening", resolve);
+    });
   });
 
   afterAll(async () => {
-    await _server.close(() => console.log("Server is closed"));
+    await new Promise((resolve) => {
+      _server.close(() => console.log("Server is closed"));
+      _server.once("close", resolve);
+    });
   });
 
   describe("POST", () => {
