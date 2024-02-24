@@ -8,7 +8,7 @@ const usersRepository = new UsersRepositoryInMemory([]);
 export const usersService = new UsersService(usersRepository);
 
 usersRoute.post("/", async (request: Request, response: Response) => {
-  const { name, lastname, email, password, document, role } =
+  const { name, lastname, email, password, document, role, funds } =
     await request.body;
 
   const successOrFailure = await usersService.create({
@@ -18,6 +18,7 @@ usersRoute.post("/", async (request: Request, response: Response) => {
     document,
     password,
     role,
+    funds,
   });
 
   if (!successOrFailure || successOrFailure.isFailure) {
