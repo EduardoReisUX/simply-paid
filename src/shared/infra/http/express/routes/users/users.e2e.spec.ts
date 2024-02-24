@@ -109,7 +109,7 @@ describe("/users", () => {
       expect(request.status).toBe(200);
       expect(response.user).toHaveProperty("document", "12345678911");
       expect(response.user).toHaveProperty("email", "unique@email.com");
-      expect(response.user).toHaveProperty("funds", 0);
+      expect(response.user).toHaveProperty("funds", "0.00");
       expect(response.user).toHaveProperty("lastname", "dos reis");
       expect(response.user).toHaveProperty("name", "dudu");
       expect(response.user).toHaveProperty("password", "dudu");

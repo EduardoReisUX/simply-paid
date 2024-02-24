@@ -7,7 +7,7 @@ export interface IUser {
   email: string;
   password: string;
   role: "common" | "shopkeeper";
-  funds?: number;
+  funds?: string;
 }
 
 export class User {
@@ -28,7 +28,7 @@ export class User {
     this.email = user.email;
     this.password = user.password;
     this.role = user.role;
-    this.funds = user.funds || 0;
+    this.funds = user.funds || "0.00";
   }
 
   public static create(user: IUser) {
@@ -70,7 +70,7 @@ export class User {
 
     if (role !== "common" && role !== "shopkeeper") {
       errors.push(
-        `InvalidFormatError: The user role [${role}] should have only numbers!`
+        `InvalidFormatError: The user role [${role}] should be 'common' or 'shopkeeper' only!`
       );
     }
 
